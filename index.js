@@ -76,7 +76,8 @@ app.post("/login", async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      sameSite: 'None'
+      sameSite: 'None',
+      secure: true
     });
 
     res.status(200).send({ message: "Cookie Set Successfully" });
