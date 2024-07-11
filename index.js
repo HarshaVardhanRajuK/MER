@@ -35,9 +35,16 @@ let transporter = nodemailer.createTransport({
   },
 });
 
+const CorsOptions = { 
+  origin: ['http://localhost:5173', 'https://harshavkmernfrontend.netlify.app'],
+  optionsSuccessStatus: 204,
+  maxAge: 86400,
+  credentials: true
+}
+
 app.disable("x-powered-by");
 app.use(express.json());
-app.use(cors({ origin: ['http://localhost:5173', 'https://harshavkmernfrontend.netlify.app'], credentials: true }));
+app.use(cors(CorsOptions));
 app.use(cookieParser());
 
 app.post("/register", async (req, res) => {
