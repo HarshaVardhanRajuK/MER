@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 import { configDotenv } from "dotenv";
 import cookieParser from "cookie-parser";
 import nodemailer from "nodemailer";
-import middleware from "./middleware.js";
+import authMiddleware from "./authMiddleware.js";
 
 configDotenv();
 
@@ -84,7 +84,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get("/my-profile", middleware, async (req, res) => {
+app.get("/my-profile", authMiddleware, async (req, res) => {
   try {
     const id = req.user.id;
     const user = await MERNAuth.findById({ _id: id });
