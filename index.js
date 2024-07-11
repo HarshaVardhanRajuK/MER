@@ -47,6 +47,10 @@ app.use(express.json());
 app.use(cors(CorsOptions));
 app.use(cookieParser());
 
+app.get('/favicon.ico', (req, res) => res.status(204).end());
+
+app.get('/favicon.png', (req, res) => res.status(204).end());
+
 app.post("/register", async (req, res) => {
   const { username, email, password } = req.body;
   try {
