@@ -205,3 +205,5 @@ app.put("/reset-password/:userId", async (req, res) => {
 app.get("/", (req, res) => {
   res.send("<h1>Hello world<h1>");
 });
+
+export default app
