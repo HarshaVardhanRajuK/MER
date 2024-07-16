@@ -111,11 +111,11 @@ app.get("/my-profile", authMiddleware, async (req, res) => {
   }
 });
 
-app.get("/logout", (req, res) => {
+app.post("/logout", (req, res) => {
   try {
     //check if the cookie existed or not
     if (typeof req.cookies.token === "string") {
-      console.log(req.cookies)
+      console.log(req.cookies["token"])
       res.clearCookie("token", { path: "/" });
       res.status(200).send({ message: "Logged out Successfully" });
     } else {
