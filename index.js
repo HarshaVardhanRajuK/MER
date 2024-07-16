@@ -87,8 +87,9 @@ app.post("/login", async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      sameSite: 'none',
-      secure: true
+      sameSite: 'None',
+      secure: true,
+      path: '/',
     });
 
     res.status(200).send({ message: "Cookie Set Successfully" });
@@ -116,7 +117,11 @@ app.post("/logout", (req, res) => {
     //check if the cookie existed or not
     if (typeof req.cookies.token === "string") {
       console.log(req.cookies["token"])
-      res.clearCookie("token", { path: "/" });
+      res.clearCookie("token", {
+        path: '/', 
+        sameSite: 'None', 
+        secure: true
+      });
       res.status(200).send({ message: "Logged out Successfully" });
     } else {
       res.status(400).send({ message: "No Cookie Found!" });
