@@ -111,6 +111,7 @@ app.get("/logout", (req, res) => {
   try {
     //check if the cookie existed or not
     if (typeof req.cookies.token === "string") {
+      console.log(req.cookies)
       res.clearCookie("token", { path: "/" });
       res.status(200).send({ message: "Logged out Successfully" });
     } else {
