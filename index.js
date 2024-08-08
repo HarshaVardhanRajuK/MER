@@ -27,11 +27,11 @@ mongoose
   })
   .catch((err) => console.log(err, "Database Denied"));
 
-let transporter = nodemailer.createTransport({
+const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "kondapalliharshavardhanraju@gmail.com",
-    pass: "sccpexdptyftqppp",
+    user: process.env.EMAIL,
+    pass: process.env.APP_PASS,
   },
 });
 
@@ -76,7 +76,7 @@ app.post("/login", async (req, res) => {
       return res.status(400).json({ message: "User not found!" });
     }
     const isMatch = await bcrypt.compare(password, user.password);
-
+    
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid Password!" });
     }
@@ -116,7 +116,6 @@ app.post("/logout", (req, res) => {
   try {
     //check if the cookie existed or not
     if (typeof req.cookies.token === "string") {
-      console.log(req.cookies["token"])
       res.clearCookie("token", {
         path: '/', 
         sameSite: 'None', 
@@ -154,22 +153,22 @@ app.put("/getotp", async (req, res) => {
     user.otp = otp;
     user.otpExpiration = otpExpiry;
     await user.save();
+let mailOptions = {
+  from: process.env.EMAIL,
+  to: email,
+  subject: "OTP for Login",
+  text: `Your OTP is ${otp}`,
+};
 
-    let mailOptions = {
-      from: "kondapalliharshavardhanraju@gmail.com",
-      to: email,
-      subject: "OTP for Login",
-      text: `Your OTP is ${otp}`,
-    };
-
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error);
-        res.status(501).send("sending email failed");
-      } else {
-        res.status(200).send({ message: "OTP sent to your email" });
-      }
-    });
+transporter.sendMail(mailOptions, function (error, info) {
+  if (error) {
+    console.log(error);
+    res.status(501).send("sending email failed");
+  } else {
+    res.status(200).send({ message: "OTP sent to your email" });
+  }
+});
+    
   } catch (err) {
     console.log(err);
   }
